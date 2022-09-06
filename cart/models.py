@@ -11,6 +11,16 @@ class Cart(models.Model):
     user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,default=0)
     quantity = models.PositiveIntegerField(null=True,blank=True)
     
+    
+    @staticmethod
+    def createCart(user):
+        cart = Cart(user = user,quantity = 0)
+        if cart is not None:
+             cart.save()
+             return True
+        return False
+        
+        
     def __str__(self):
         return f"{self.user.user.username} cart"
     

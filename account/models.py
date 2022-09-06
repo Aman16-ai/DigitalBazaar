@@ -1,7 +1,6 @@
-from asyncio.windows_events import NULL
-from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
+
 # Create your models here.
 
 gender_choice = (
@@ -15,6 +14,24 @@ class UserProfile(models.Model):
     phone_no = models.PositiveIntegerField()
     age = models.PositiveIntegerField()
     gender = models.CharField(choices=gender_choice,max_length=6)
+    
+    
+    @staticmethod
+    def registerUser(username,firstname,lastname,email,password,phone_no,age,gender):
+        user = User.objects.create_user(username = username,email=email,password = password)
+        user.first_name = firstname
+        user.last_name = lastname
+        if user is not None:
+            userProfile = UserProfile(user = user,phone_no = phone_no,age = age,gender = gender)
+            userProfile.save()
+            user.save()
+            if userProfile is not None:
+               return userProfile
+                
+        return None
+    
+    def __str__(self):
+        return self.user.username
     
 
     
