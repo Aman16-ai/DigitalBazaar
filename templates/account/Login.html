@@ -3,7 +3,7 @@
 {% block body %}
 
     <div class="container my-3">
-        <form action="login" method="POST">
+        <form action="/account/handlelogin" method="POST">
           
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Username</label>
@@ -15,7 +15,7 @@
               name="pass_login"
               >
             </div>
-            {% csrf_token %} 
+            {% csrf_token %}
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>
