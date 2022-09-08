@@ -1,5 +1,4 @@
-from ast import Sub
 from django.contrib import admin
-from product.models import Product,Category,SubCategory
+from product.models import Product,Category
 # Register your models here.
-admin.site.register((Product,Category,SubCategory))
+admin.site.register((Product,Category))

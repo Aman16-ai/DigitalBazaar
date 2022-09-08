@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'home.apps.HomeConfig',
     'cart.apps.CartConfig',
-    'product.apps.ProductConfig',
-    'reset_migrations'
+    'product.apps.ProductConfig'
 ]
 
 MIDDLEWARE = [
