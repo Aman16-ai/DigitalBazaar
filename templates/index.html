@@ -1,10 +1,149 @@
 {% extends 'base.html' %}
 {% block tabtitle %}Welcome to DigitalBazaar{% endblock tabtitle %}
 {% block body %}
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        .main-container {
+            width: 100vw;
+            height: 100vh;
+        }
 
-<div class="container">
-    <h1>Welcome to DigitalBazaar</h1>
-    <p>All products will show here</p>
+       
+        #showimg1 {
+          width: 100%;
+          height: 80vh;
+        }
+    
+        #showimg2 {
+          width: 100%;
+          height: 80vh;
+        }
+      #top-products {
+        margin-bottom: 20px;
+      }
+      .discount-banner {
+        width: 8vw;
+        height: 3vh;
+        background-color: #CC0C39;
+        color: white;
+        font-weight: bolder;
+        position: absolute;
+        padding: 10px;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 4px;
+        margin-left: 4px;
+      }
+      .discount-banner p {
+        margin-top: 15px;
+        font-size: small;
+      }
+      .carousel-title {
+        margin-left: 15px;
+        margin-bottom: 20px;
+      }
+      #top-products {
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: 10px;
+      }
+      .pro-img {
+        height:30vh;
+      }
+    </style>
+{% endblock css %}
+<div class="main-container">
+      <div  id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
+            aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+            aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+            aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img id="showimg1" src="../static/Images/ecompic.png" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>First slide label</h5>
+              <p>Some representative placeholder content for the first slide.</p>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <img id="showimg2" src="..{{bestDeal.product_img.url}}" class="d-block w-100" alt="...">
+            <div class="carousel-caption d-none d-md-block">
+              <h5>Second slide label</h5>
+              <p>Some representative placeholder content for the second slide.</p>
+            </div>
+          </div>
+        
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+
+    <h2 class="carousel-title" >Best Deals of the day</h2>
+    <div id="top-products" class="owl-carousel owl-theme">
+      {% for p in discounted_products%}
+      
+      <div class="item">
+
+        <div class="card" style="width: 19vw;">
+          <div class="discount-banner"><p>{{p.discount|floatformat:"-1"}}% OFF</p></div>
+          <img src="..{{p.product_img.url}}" class="card-img-top pro-img" alt="...">
+          <div class="card-body">
+            <h6 class="card-title">{{p.title}}</h6>
+            <p style="margin-bottom: 0px;" class="card-text">M.R.P <del>₹{{p.price}}</del></p>
+            <p style="font-size: 25px; margin-top:0px" class="card-text">₹{{p.getFinalPrice}}</p>
+            <a href="product/{{p.id}}" class="btn btn-primary">Buy now</a>
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+    
+  </div>
+  
+    
 </div>
 
 {% endblock body %}
+{% block js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicydiscounted_products="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+$('.owl-carousel').owlCarousel({
+    loop:true,
+    margin:10,
+    nav:true,
+    responsive:{
+        0:{
+            items:1
+        },
+        600:{
+            items:3
+        },
+        1000:{
+            items:5
+        }
+    }
+})
+</script>
+{% endblock js %}

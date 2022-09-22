@@ -1,4 +1,5 @@
 from datetime import datetime
+from math import prod
 from pyexpat import model
 from django.db import models
 
@@ -18,9 +19,25 @@ class Product(models.Model):
     description = models.TextField()
     product_img = models.ImageField(upload_to="product_images")
     price = models.PositiveIntegerField()
+    discount = models.FloatField(null=True,blank=True,default=0)
     category = models.ForeignKey(Category,on_delete=models.CASCADE,default="other")
     stock = models.PositiveIntegerField()
     created_at = models.DateField(default = datetime.now())
+    
+    
+    @property
+    def getFinalPrice(self):
+        if self.discount > 0:
+            dis_amount = (self.discount/100) * self.price
+            return round(self.price - dis_amount)
+        else:
+            return self.price
+            
+    @staticmethod
+    def getDiscountedPrice():
+        product = Product.objects.all()
+        
+        return [p for p in product if p.discount > 0]
     
     def __str__(self):
         return self.title

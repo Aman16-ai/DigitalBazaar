@@ -1,4 +1,5 @@
 from datetime import datetime
+from itertools import product
 from tkinter import CASCADE
 from django.db import models
 
@@ -12,6 +13,8 @@ class Cart(models.Model):
     quantity = models.PositiveIntegerField(null=True,blank=True)
     
     
+
+    
     @staticmethod
     def createCart(user):
         cart = Cart(user = user,quantity = 0)
@@ -19,6 +22,20 @@ class Cart(models.Model):
              cart.save()
              return True
         return False
+        
+    
+    @staticmethod
+    def getUserCart(user):
+        return Cart.objects.filter(user = user)
+    
+    @property
+    def getCartTotal(self):
+        userCart = CartItem.objects.filter(cart = self)
+        total = 0;
+        for item in userCart:
+            total += item.product.getFinalPrice
+            
+        return total
         
         
     def __str__(self):
