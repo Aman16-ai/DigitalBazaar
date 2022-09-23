@@ -34,10 +34,10 @@ class Product(models.Model):
             return self.price
             
     @staticmethod
-    def getDiscountedPrice():
-        product = Product.objects.all()
-        
-        return [p for p in product if p.discount > 0]
+    def getDiscountedProduct():
+        product = Product.objects.order_by("-discount").all()
+        productwithdiscount = [p for p in product if p.discount > 0]
+        return productwithdiscount
     
     def __str__(self):
         return self.title
