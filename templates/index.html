@@ -50,6 +50,7 @@
       .carousel-title {
         margin-left: 15px;
         margin-bottom: 20px;
+        
       }
       #top-products {
         margin-left: 15px;
@@ -122,6 +123,29 @@
     
   </div>
   
+
+  <h2 class="carousel-title" >Mens' wear</h2>
+    <div id="top-products" class="owl-carousel owl-theme">
+      {% for p in mens%}
+      
+      <div class="item">
+
+        <div class="card" style="width: 19vw;">
+          <div class="discount-banner"><p>{{p.discount|floatformat:"-1"}}% OFF</p></div>
+          <img src="..{{p.product_img.url}}" class="card-img-top pro-img" alt="...">
+          <div class="card-body">
+            <h6 class="card-title">{{p.title}}</h6>
+            <p style="margin-bottom: 0px;" class="card-text">M.R.P <del>₹{{p.price}}</del></p>
+            <p style="font-size: 25px; margin-top:0px" class="card-text">₹{{p.getFinalPrice}}</p>
+            <a href="mycart/addToCart/{{p.id}}" style="color : #0D6EFD; border:2px solid #0D6EFD"  class="btn">Add to cart</a>
+            <a href="product/{{p.id}}" class="btn btn-primary">Buy now</a>
+          </div>
+        </div>
+
+      </div>
+      {% endfor %}
+    
+  </div>
     
 </div>
 
