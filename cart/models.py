@@ -1,6 +1,6 @@
 from datetime import datetime
-from itertools import product
 from tkinter import CASCADE
+from warnings import catch_warnings
 from django.db import models
 
 from account.models import UserProfile
@@ -26,7 +26,8 @@ class Cart(models.Model):
     
     @staticmethod
     def getUserCart(user):
-        return Cart.objects.filter(user = user)
+        userProfile = UserProfile.objects.get(user = user)
+        return Cart.objects.get(user = userProfile)
     
     @property
     def getCartTotal(self):
@@ -36,8 +37,7 @@ class Cart(models.Model):
             total += item.product.getFinalPrice
             
         return total
-        
-        
+     
     def __str__(self):
         return f"{self.user.user.username} cart"
     
@@ -48,4 +48,15 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product,on_delete=models.CASCADE,default=None)
     quantity = models.PositiveIntegerField(null=True,blank=True)
     created_at = models.DateField(default=datetime.now())
+    
+    @staticmethod
+    def addItemToCart(cart,product,quantity):
+        try:
+            result = CartItem(cart = cart,product = product,quantity=quantity)
+            result.save()
+            return True
+        except Exception as err:
+            print(err)
+            return False
+        
     
