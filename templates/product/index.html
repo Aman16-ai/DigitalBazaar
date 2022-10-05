@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block css %}
+<style>
+    .product-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .left {
+        width: 40%;
+        height: 100vh;
+    }
+
+    .right {
+        width: 60%;
+        height: 100vh;
+    }
+
+    .left img {
+        width: 40vw;
+        height: 70vh;
+        margin-top: 20px;
+    }
+
+    #product-title {
+        margin-top: 20px;
+        margin-left: 10px;
+        font-size: larger;
+        font-weight: 500;
+    }
+
+    .price-container {
+
+        height: 10vh;
+        margin-top: 15px;
+        margin-left: 10px;
+        display: flex;
+    }
+
+    #price-title {
+        font-size: xx-large;
+        font-weight: 600;
+    }
+
+    #original-price-title {
+        align-self: center;
+        margin-left: 20px;
+        font-size: 20px;
+    }
+    #discount-price-para {
+        align-self: center;
+        margin-left: 20px;
+        font-size: 22px;
+        color: green;
+        font-weight: 400;
+    }
+</style>
+{% endblock css %}
+
+{% block body %}
+
+<div class="product-container">
+    <div class="left">
+        <img src="{{product.product_img.url}}" alt="">
+    </div>
+    <div class="right">
+        <h6 id="product-title">{{product.title}}</h6>
+
+        <div class="price-container">
+            <h4 id="price-title">₹{{product.getFinalPrice}}</h4>
+            <p id="original-price-title"><del>₹{{product.price}}</del></p>
+            <p id="discount-price-para">{{product.discount|floatformat:"-1"}}% off</p>
+        </div>
+
+        <div class="description-container">
+            <p>{{product.description}}</p>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block js %}
+<script>
+    let final_price = parseInt(`{{ product.getFinalPrice }}`)
+    let original_price = parseInt(`{{product.price}}`)
+    document.getElementById("price-title").innerText ="₹" + final_price.toLocaleString("en-IN")
+    let formatted_original_price = original_price.toLocaleString("en-IN")
+    document.getElementById("original-price-title").innerHTML =`<del>₹${formatted_original_price}</del>`
+</script>
+{% endblock js %}

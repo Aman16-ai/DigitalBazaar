@@ -14,7 +14,8 @@ def addToCart(request,pk):
     cart = Cart.getUserCart(request.user)
     product = Product.objects.get(pk = pk)
     print(cart)
-    result = CartItem.addItemToCart(cart = cart,product=product,quantity=1)
+    result = cart.addItemToCart(product=product,quantity=1)
+    print(result)
     if result:
-        redirect("/")
+        return redirect("/")
     return HttpResponse("something went wrong")

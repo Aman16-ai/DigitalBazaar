@@ -41,6 +41,16 @@ class Cart(models.Model):
     def __str__(self):
         return f"{self.user.user.username} cart"
     
+    def addItemToCart(self,product,quantity):
+        try:
+            cartItem = CartItem(cart = self,product = product,quantity = quantity)
+            cartItem.save()
+            return True
+        except Exception as e:
+            print(e)
+            return False
+            
+    
 
 class CartItem(models.Model):
     id = models.AutoField(primary_key=True)
@@ -49,14 +59,8 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(null=True,blank=True)
     created_at = models.DateField(default=datetime.now())
     
-    @staticmethod
-    def addItemToCart(cart,product,quantity):
-        try:
-            result = CartItem(cart = cart,product = product,quantity=quantity)
-            result.save()
-            return True
-        except Exception as err:
-            print(err)
-            return False
+    def __str__(self):
+        return f"cart item : {self.product.title}"
+    
         
     
