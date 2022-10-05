@@ -5,5 +5,5 @@ from product.models import Product
 # Create your views here.
 def index(request,pk):
     product = Product.objects.get(pk = pk)
-    print(product)
-    return HttpResponse(pk)
+    context = {'product':product}
+    return render(request,"product/index.html",context)

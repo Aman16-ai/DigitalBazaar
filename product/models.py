@@ -15,7 +15,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=150)
     description = models.TextField()
     product_img = models.ImageField(upload_to="product_images")
     price = models.PositiveIntegerField()
