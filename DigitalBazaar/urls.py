@@ -23,5 +23,6 @@ urlpatterns = [
     path('',include("home.urls")),
     path('account/',include("account.urls")),
     path('mycart/',include("cart.urls")),
-    path('product/',include("product.urls"))
+    path('product/',include("product.urls")),
+    path(r'^froala_editor/', include('froala_editor.urls')),  
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

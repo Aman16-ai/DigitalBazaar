@@ -8,6 +8,11 @@ from product.models import Product
 
 # Create your views here.
 def mycart(request):
+    #fetching all cartitems of current user
+   
+    allitem = Cart.getAllCartItemsOfCurrentUser(request.user)
+    for item in allitem:
+        print(f"Product : {item.product.title[:5]} and Quantity : {item.quantity}")
     return HttpResponse("this is my chart")
 
 def addToCart(request,pk):

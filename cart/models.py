@@ -2,7 +2,7 @@ from datetime import datetime
 from tkinter import CASCADE
 from warnings import catch_warnings
 from django.db import models
-
+from django.db.models import Q
 from account.models import UserProfile
 from product.models import Product
 
@@ -34,17 +34,37 @@ class Cart(models.Model):
         userCart = CartItem.objects.filter(cart = self)
         total = 0;
         for item in userCart:
-            total += item.product.getFinalPrice
+            total += item.product.getFinalPrice * item.quantity
             
         return total
      
     def __str__(self):
         return f"{self.user.user.username} cart"
     
+    
+    @staticmethod
+    def getAllCartItemsOfCurrentUser(user):
+        try:
+            user_cart = Cart.getUserCart(user)
+            allcartitems = CartItem.objects.filter(cart = user_cart)
+            print(allcartitems)
+            return allcartitems
+        except Exception as e:
+            print(e)
+    
     def addItemToCart(self,product,quantity):
         try:
-            cartItem = CartItem(cart = self,product = product,quantity = quantity)
-            cartItem.save()
+            cartItem = CartItem.objects.filter(Q(cart=self) & Q(product = product))
+            if len(cartItem) != 0:
+                print("Already exsits")
+                print(cartItem)
+                cartItem[0].quantity += 1
+                cartItem[0].save()
+            else:
+                 cartItem = CartItem(cart = self,product = product,quantity = quantity)
+                 cartItem.save()
+                 self.quantity += 1;
+                 self.save()
             return True
         except Exception as e:
             print(e)

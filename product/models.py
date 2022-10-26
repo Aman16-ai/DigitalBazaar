@@ -2,7 +2,7 @@ from datetime import datetime
 from math import prod
 from pyexpat import model
 from django.db import models
-
+from froala_editor.fields import FroalaField
 # Create your models here.
 class Category(models.Model):
     id = models.AutoField(primary_key=True)
@@ -17,6 +17,7 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=150)
     description = models.TextField()
+    content = FroalaField(blank=True, null=True)
     product_img = models.ImageField(upload_to="product_images")
     price = models.PositiveIntegerField()
     discount = models.FloatField(null=True,blank=True,default=0)
