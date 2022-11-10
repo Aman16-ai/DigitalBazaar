@@ -13,7 +13,7 @@ def mycart(request):
     allitem = Cart.getAllCartItemsOfCurrentUser(request.user)
     for item in allitem:
         print(f"Product : {item.product.title[:5]} and Quantity : {item.quantity}")
-    return HttpResponse("this is my chart")
+    return render(request,"cart/index.html")
 
 def addToCart(request,pk):
     cart = Cart.getUserCart(request.user)
