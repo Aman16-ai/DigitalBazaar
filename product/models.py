@@ -28,17 +28,17 @@ class Product(models.Model):
     
     @property
     def getFinalPrice(self):
-        if self.discount > 0:
-            dis_amount = (self.discount/100) * self.price
-            return round(self.price - dis_amount)
-        else:
-            return self.price
+        return round(self.price - self.getDiscountPrice())
             
     @staticmethod
     def getDiscountedProduct():
         product = Product.objects.order_by("-discount").all()
         productwithdiscount = [p for p in product if p.discount > 0]
         return productwithdiscount
+    
+    def getDiscountPrice(self):
+        dis_amount = (self.discount/100) * self.price
+        return dis_amount
     
     def __str__(self):
         return self.title

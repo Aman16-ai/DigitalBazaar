@@ -31,13 +31,39 @@ class Cart(models.Model):
     
     @property
     def getCartTotal(self):
-        userCart = CartItem.objects.filter(cart = self)
-        total = 0;
-        for item in userCart:
+        userCartItems = CartItem.objects.filter(cart = self)
+        total = 0
+        for item in userCartItems:
             total += item.product.getFinalPrice * item.quantity
             
         return total
+    
+    @property
+    def getCartTotalDiscout(self):
+        userCartItems = CartItem.objects.filter(cart = self)
+        totalDiscount = 0
+        for item in userCartItems:
+            totalDiscount += item.product.getDiscountPrice() * item.quantity
+            
+        return totalDiscount
+    
+    @property
+    def getCartOriginalPrice(self):
+        userCartItems = CartItem.objects.filter(cart = self)
+        total = 0
+        for item in userCartItems:
+            total += item.product.price * item.quantity
+            
+        return total
      
+    @property
+    def getCartTotalItems(self):
+        userCartItem = CartItem.objects.filter(cart = self)
+        count = 0
+        for item in userCartItem:
+            count += item.quantity
+        return count
+
     def __str__(self):
         return f"{self.user.user.username} cart"
     

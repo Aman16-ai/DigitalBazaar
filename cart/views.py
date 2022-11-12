@@ -11,9 +11,11 @@ def mycart(request):
     #fetching all cartitems of current user
    
     allitem = Cart.getAllCartItemsOfCurrentUser(request.user)
+    userCart = Cart.getUserCart(request.user)
+    print(f"Cart Total : {userCart.getCartTotal} Total Items : {userCart.getCartTotalItems}")
     for item in allitem:
-        print(f"Product : {item.product.title[:5]} and Quantity : {item.quantity}")
-    return render(request,"cart/index.html")
+        print(f"Product : {item.product.title[:5]} , Price :{item.product.getFinalPrice} and Quantity : {item.quantity}")
+    return render(request,"cart/index.html",{"cart":userCart})
 
 def addToCart(request,pk):
     cart = Cart.getUserCart(request.user)
