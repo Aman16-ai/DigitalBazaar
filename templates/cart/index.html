@@ -70,12 +70,12 @@
             <p id="price-heading">PRICE DETAILS</p>
             <hr>
             <div class="first">
-                <p>Price(1 item)</p>
-                <p id="value">₹9,000</p>
+                <p>Price({{cart.getCartTotalItems}} item)</p>
+                <p id="value">₹{{cart.getCartOriginalPrice}}</p>
             </div>
             <div class="first">
                 <p>Discount</p>
-                <p id="value2">-₹1,701</p>
+                <p id="value2">-₹{{cart.getCartTotalDiscout|floatformat:"-1"}}</p>
             </div>
             <div class="first">
                 <p>Delivery Charges</p>
@@ -84,8 +84,20 @@
             <hr>
             <div class="total-amount-container">
                 <p>Total Amount</p>
-                <p id="value4">₹7,299</p>
+                <p id="value4">₹{{cart.getCartTotal}}</p>
             </div>
         </div>
     </div>
 {% endblock body %}
+{% block js %}
+    <script>
+        function formatPrice(elementId,value,...rest) {
+            let x = rest.length?rest[0]:""
+            let totalAmount = parseInt(elementId)
+            document.getElementById(value).innerText = `${rest}₹${totalAmount.toLocaleString("en-in")}`
+        }
+        formatPrice('{{cart.getCartOriginalPrice}}','value')
+        formatPrice('{{cart.getCartTotal}}','value4')
+        formatPrice('{{cart.getCartTotalDiscout|floatformat:"-1"}}','value2','-')
+    </script>
+{% endblock js %}
