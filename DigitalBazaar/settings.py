@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,7 +43,8 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'cart.apps.CartConfig',
     'product.apps.ProductConfig',
-    'froala_editor'
+    'froala_editor',
+   
 ]
 
 MIDDLEWARE = [
@@ -132,3 +134,9 @@ STATICFILES_DIRS = [
    BASE_DIR/'static'
 ]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
