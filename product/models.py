@@ -35,6 +35,12 @@ class Product(models.Model):
         product = Product.objects.order_by("-discount").all()
         productwithdiscount = [p for p in product if p.discount > 0]
         return productwithdiscount
+
+    @staticmethod
+    def getProductByCategory(category_name):
+        category = Category.objects.get(name = category_name)
+        products = Product.objects.filter(category = category)
+        return products
     
     def getDiscountPrice(self):
         dis_amount = (self.discount/100) * self.price
