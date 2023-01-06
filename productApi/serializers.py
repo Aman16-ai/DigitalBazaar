@@ -8,6 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     
 class ProductSerializer(serializers.ModelSerializer):
+    getFinalPrice = serializers.ReadOnlyField()
     class Meta:
         model= Product
         fields = "__all__"

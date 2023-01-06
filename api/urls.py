@@ -6,5 +6,6 @@ urlpatterns = [
     path("account/getUser",getUser,name="get_user"),
     path("account/login",loginUser,name="login_user"),
     # path("product",getProducts,name="getproducts")
-    path("product/",include("productApi.urls"))
+    path("product/",include("productApi.urls")),
+    path("cart/",include("cartApi.urls"))
 ]
