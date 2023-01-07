@@ -10,3 +10,10 @@ class CartSerializers(serializers.ModelSerializer):
         fields = "__all__"
         model = Cart
         depth = True
+
+    
+class CartItemSerializers(serializers.ModelSerializer):
+    class Meta:
+        fields = "__all__"
+        model = CartItem
+        depth = True
