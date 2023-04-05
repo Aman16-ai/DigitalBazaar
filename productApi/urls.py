@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path,include
 from .views import *
+from .routers import router
 urlpatterns = [
-    path("",getAllProducts),
-    path("categories/",getAllCategories),
+    path("",include(router.urls)),
 ]
