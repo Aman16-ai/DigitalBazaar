@@ -34,23 +34,37 @@ def addItemToCart(request):
         quantity = request.data['quantity']
         user_cart = Cart.getUserCart(request.user)
         product = Product.objects.get(pk=productId)
-        result = Cart.addItemToCart(user_cart, product, quantity)
-        return Response({"Result": result})
+        # result = Cart.addItemToCart(user_cart, product, quantity)
+        result = user_cart.addItemToCart(product=product, quantity=quantity)
+        print('running inside additem view api', type(result))
+        if result != None:
+            # ser = CartItemSerializers(result)
+            # print(ser.data)
+            return Response({"Response": 'added'})
+
+        return Response({"Response": "Failed to add item to cart"})
+        # serializer = CartAddItemSerializer(data=request.data,context={'user':request})
+        # if serializer.is_valid(raise_exception=True):
+        #     result = serializer.save()
+        #     return Response({"Response":result},status=200)
+        # return Response({"Response": serializer.error_messages},status=501)
     except Exception as e:
         return Response({"error": "some internal server error"})
 
 
-class CartItemViewSet(viewsets.ModelViewSet):
-    serializer_class = CartItemSerializers
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        userCart = Cart.getAllCartItemsOfCurrentUser(self.request.user)
-        return userCart
-
-    @action(detail=True, methods=['POST'])
-    def addItem(self):
-        userCart = Cart.getUserCart(self.request.user)
-        serializer = CartAddItemSerializer(data=self.request.data)
-        if(serializer.is_valid(raise_exception=True)):
-            pass
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def incrementCartItem(request, pk):
+    try:
+        if request.method == 'POST':
+            ser = CartAddItemSerializer(data=request.data)
+            if ser.is_valid(raise_exception=True):
+                cart_item = CartItem.objects.get(pk=pk)
+                user_cart = Cart.getUserCart(request.user)
+                print("Quanity", request.data['quantity'])
+                result = cart_item.incrementItemQuantity(
+                    user_cart, ser['quantity'].value)
+                return Response({"Response": result})
+        return Response({"Error": "Method not valid"})
+    except Exception as e:
+        return Response({"Error": "Something went wrong"})

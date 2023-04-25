@@ -2,6 +2,8 @@ from abc import ABC
 
 from rest_framework import serializers
 from cart.models import Cart, CartItem
+from product.models import Product
+from productApi.serializers import ProductSerializer
 
 
 class CartSerializers(serializers.ModelSerializer):
@@ -17,14 +19,19 @@ class CartSerializers(serializers.ModelSerializer):
 
 
 class CartItemSerializers(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+
     class Meta:
         fields = "__all__"
         model = CartItem
-        depth = True
 
 
 class CartAddItemSerializer(serializers.Serializer):
-    product_id = serializers.IntegerField()
+    # product_id = serializers.IntegerField()
     quantity = serializers.IntegerField()
 
-
+    # def create(self, validated_data):
+    #     print(self.context['user'])
+    #     user_cart = Cart.getUserCart(self.context['user'])
+    #     product = Product.objects.get(validated_data['product_id'])
+    #     return Cart.addItemToCart(user_cart, product, validated_data['quantity'])
