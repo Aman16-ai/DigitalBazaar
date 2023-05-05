@@ -64,7 +64,10 @@ def incrementCartItem(request, pk):
                 print("Quanity", request.data['quantity'])
                 result = cart_item.incrementItemQuantity(
                     user_cart, ser['quantity'].value)
-                return Response({"Response": result})
+                if result is not None:
+                    ser = CartItemSerializers(result,many=False)
+                    return Response({"status":True,"Reponse":ser.data})
+                return Response({"status":False,"Response": result})
         return Response({"Error": "Method not valid"})
     except Exception as e:
         return Response({"Error": "Something went wrong"})
