@@ -118,9 +118,9 @@ class CartItem(models.Model):
         if self.cart.id == cart.id:
             self.quantity += quanity
             self.save()
-            return True
+            return self
         else:
-            return False
+            return None
 
     def decrementItemQuantiy(self, cart):
         if self.cart.id == cart.id:
