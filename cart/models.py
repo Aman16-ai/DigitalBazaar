@@ -112,9 +112,6 @@ class CartItem(models.Model):
         return f"cart item : {self.product.title}"
 
     def incrementItemQuantity(self, cart, quanity):
-        print("Cartitem cart id ", self.cart.id)
-        print("User cart id", cart.id)
-        print("Quantity in cartitem", quanity)
         if self.cart.id == cart.id:
             self.quantity += quanity
             self.save()
@@ -122,10 +119,13 @@ class CartItem(models.Model):
         else:
             return None
 
-    def decrementItemQuantiy(self, cart):
+    def decrementItemQuantiy(self, cart,quantity):
         if self.cart.id == cart.id:
             if self.quantity > 0:
-                self.quantity -= 1
-                return True
+                self.quantity -= quantity
+                self.save()
+                return self
             else:
                 return None
+        else:
+            return None

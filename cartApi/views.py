@@ -61,7 +61,6 @@ def incrementCartItem(request, pk):
             if ser.is_valid(raise_exception=True):
                 cart_item = CartItem.objects.get(pk=pk)
                 user_cart = Cart.getUserCart(request.user)
-                print("Quanity", request.data['quantity'])
                 result = cart_item.incrementItemQuantity(
                     user_cart, ser['quantity'].value)
                 if result is not None:
@@ -71,3 +70,36 @@ def incrementCartItem(request, pk):
         return Response({"Error": "Method not valid"})
     except Exception as e:
         return Response({"Error": "Something went wrong"})
+    
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def decrementCartItem(request, pk):
+    try:
+        if request.method == 'POST':
+            ser = CartAddItemSerializer(data=request.data)
+            if ser.is_valid(raise_exception=True):
+                cart_item = CartItem.objects.get(pk=pk)
+                user_cart = Cart.getUserCart(request.user)
+                result = cart_item.decrementItemQuantiy(
+                    user_cart, ser['quantity'].value)
+                if result is not None:
+                    ser = CartItemSerializers(result,many=False)
+                    return Response({"status":True,"Reponse":ser.data})
+                return Response({"status":False,"Response": result})
+        return Response({"Error": "Method not valid"})
+    except Exception as e:
+        return Response({"Error": "Something went wrong"})
+    
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def removeCartItem(request,pk):
+    try:
+        cartItem = CartItem.objects.get(pk=pk)
+        if cartItem is None:
+            return Response({"status":False,"Error":"CartItem not found"})
+        cartItem.delete()
+        return Response({"status":True,"Response":"Removed"})
+    except Exception as e:
+        return Response({"status":False,"Error":"Something went wrong"})

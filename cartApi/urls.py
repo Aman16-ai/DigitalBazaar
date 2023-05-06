@@ -6,5 +6,7 @@ urlpatterns = [
     path("", getUserCart),
     path("getUserCartItems/", getCartItems),
     path("addItemToCart/", addItemToCart),
-    path("incrementQuantity/<int:pk>/", incrementCartItem)
+    path("incrementQuantity/<int:pk>/", incrementCartItem),
+    path('decrementQuantity/<int:pk>/',decrementCartItem),
+    path("removeCartItem/<int:pk>/",removeCartItem)
 ]
