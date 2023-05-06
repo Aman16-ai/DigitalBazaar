@@ -34,4 +34,15 @@ class UserProfile(models.Model):
         return self.user.username
     
 
+class Address(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(UserProfile,on_delete=models.CASCADE)
+    city = models.CharField(max_length=50)
+    district = models.CharField(max_length=50)
+    state = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    landmark = models.CharField(max_length=50)
+    pincode = models.PositiveIntegerField()
+    
+
     
