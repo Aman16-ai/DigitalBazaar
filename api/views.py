@@ -1,11 +1,12 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated
-from .serializers import UserProfileSerializer,LoginSerializer,ProductSerializer
-from account.models import UserProfile
+from .serializers import AddressSerializer, UserProfileSerializer,LoginSerializer,ProductSerializer
+from account.models import UserProfile,Address
 from django.contrib.auth import authenticate
 from utils import generateJWT
 from product.models import Product,Category
+from rest_framework import viewsets
 
 @api_view(["POST"])
 def register(request):
@@ -51,3 +52,23 @@ def getProducts(request):
     
     serializer = ProductSerializer(allProducts,many=True)
     return Response({"Product":serializer.data})
+
+
+class AddressViewSet(viewsets.ModelViewSet):
+    queryset = Address.objects.all()
+    serializer_class = AddressSerializer
+    permission_classes = [IsAuthenticated]
+    http_method_names = ['get','post']
+    action_serializers = {
+        'retrieve':AddressSerializer,
+        'list': AddressSerializer,
+        'update': AddressSerializer,
+        'delete':AddressSerializer,
+    }
+    def get_serializer_class(self):
+        if hasattr(self, 'action_serializers'):
+            return self.action_serializers.get(self.action, self.serializer_class)
+
+        return super(AddressViewSet, self).get_serializer_class()
+
+    

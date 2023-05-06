@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from account.models import UserProfile
+from account.models import UserProfile,Address
 from cart.models import Cart
 from product.models import Product,Category
 
@@ -49,3 +49,15 @@ class ProductSerializer(serializers.ModelSerializer):
         model= Product
         fields = "__all__"
         depth = True
+
+class AddressSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset = UserProfile.objects.all())
+    class Meta:
+        model = Address
+        fields = "__all__"
+
+    
+    def create(self, validated_data):
+        address = Address(**validated_data)
+        address.save()
+        return address
