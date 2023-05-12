@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view,permission_classes,action
 from rest_framework.permissions import IsAuthenticated
 from .serializers import AddressSerializer, UserProfileSerializer,LoginSerializer,ProductSerializer
 from account.models import UserProfile,Address
@@ -59,16 +59,46 @@ class AddressViewSet(viewsets.ModelViewSet):
     serializer_class = AddressSerializer
     permission_classes = [IsAuthenticated]
     http_method_names = ['get','post']
+
+    @action(detail=False)
+    def get_user_addresses(self,request):
+        user = UserProfile.objects.get(user = request.user)
+        address = Address.objects.filter(user = user)
+        serializer = AddressSerializer(address,many=True)
+        return Response(serializer.data)
+
     action_serializers = {
         'retrieve':AddressSerializer,
         'list': AddressSerializer,
         'update': AddressSerializer,
         'delete':AddressSerializer,
     }
+        
     def get_serializer_class(self):
         if hasattr(self, 'action_serializers'):
             return self.action_serializers.get(self.action, self.serializer_class)
 
         return super(AddressViewSet, self).get_serializer_class()
+
+    def finalize_response(self, request, response, *args, **kwargs):
+        final_response = Response({"status":response.status_code,"Response":response.data})
+        final_response.accepted_renderer = request.accepted_renderer
+        final_response.accepted_media_type = request.accepted_media_type
+        final_response.renderer_context = self.get_renderer_context()
+        return final_response
+    
+    def get_renderer_context(self):
+        """
+        Returns a dict that is passed through to Renderer.render(),
+        as the `renderer_context` keyword argument.
+        """
+        # Note: Additionally 'response' will also be added to the context,
+        #       by the Response object.
+        return {
+            'view': self,
+            'args': getattr(self, 'args', ()),
+            'kwargs': getattr(self, 'kwargs', {}),
+            'request': getattr(self, 'request', None)
+        }
 
     
