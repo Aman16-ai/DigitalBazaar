@@ -51,13 +51,15 @@ class ProductSerializer(serializers.ModelSerializer):
         depth = True
 
 class AddressSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(queryset = UserProfile.objects.all())
+    # user = serializers.PrimaryKeyRelatedField(queryset = UserProfile.objects.all())
+    user = UserProfileSerializer(read_only=True)
     class Meta:
         model = Address
         fields = "__all__"
 
     
     def create(self, validated_data):
-        address = Address(**validated_data)
+        user = UserProfile.objects.get(user = self.context['request'].user)
+        address = Address(user = user,**validated_data)
         address.save()
         return address

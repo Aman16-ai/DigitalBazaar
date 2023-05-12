@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'froala_editor',
     "corsheaders",
     'django_filters',
+    'order.apps.OrderConfig'
    
 ]
 
