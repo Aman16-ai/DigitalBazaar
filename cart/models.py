@@ -69,7 +69,7 @@ class Cart(models.Model):
     def getAllCartItemsOfCurrentUser(user):
         try:
             user_cart = Cart.getUserCart(user)
-            allcartitems = CartItem.objects.filter(cart=user_cart)
+            allcartitems = CartItem.objects.filter(Q(cart=user_cart) & Q(status = "NOT_ORDERED"))
             print(allcartitems)
             return allcartitems
         except Exception as e:
@@ -79,7 +79,10 @@ class Cart(models.Model):
         try:
             print('running')
             cartItem = CartItem.objects.filter(
-                Q(cart=self) & Q(product=product)).first()
+                Q(cart=self) 
+                & Q(product=product)
+                & Q(status = "NOT_ORDERED")
+            ).first()
             print('old cartitem type', cartItem)
             if cartItem != None:
                 print("Already exsits")
@@ -99,13 +102,17 @@ class Cart(models.Model):
             print(e)
             return None
 
-
+cartItem_status = (
+    ('ORDERED','ORDERED'),
+    ('NOT_ORDERED','NOT_ORDERED')
+)
 class CartItem(models.Model):
     id = models.AutoField(primary_key=True)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, default=None)
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, default=None)
     quantity = models.PositiveIntegerField(null=True, blank=True)
+    status = models.CharField(choices=cartItem_status,max_length=20,default='NOT_ORDERED',null=True,blank=True)
     created_at = models.DateField(default=datetime.now())
 
     def __str__(self):
