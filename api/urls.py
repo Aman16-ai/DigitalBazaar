@@ -9,5 +9,6 @@ urlpatterns = [
     path("account/address/",include(addres_router.urls)),
     # path("product",getProducts,name="getproducts")
     path("product/",include("productApi.urls")),
-    path("cart/",include("cartApi.urls"))
+    path("cart/",include("cartApi.urls")),
+    path("order/",include("order.urls"))
 ]
