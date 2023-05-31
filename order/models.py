@@ -18,6 +18,8 @@ class Order(models.Model):
     status = models.CharField(choices=STATUS_CHOICES,max_length=20,default='PENDING')
     address = models.ForeignKey(Address,on_delete=models.CASCADE,related_name="order_address")
 
+    def __str__(self) -> str:
+        return "Order : " + self.user.user.username
     @property
     def get_total(self):
         total = 0

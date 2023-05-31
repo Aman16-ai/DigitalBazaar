@@ -43,6 +43,9 @@ class Address(models.Model):
     country = models.CharField(max_length=100)
     landmark = models.CharField(max_length=50)
     pincode = models.PositiveIntegerField()
+
+    def __str__(self) -> str:
+        return "Address : " + self.user.user.username
     
 
     
