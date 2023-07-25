@@ -5,6 +5,7 @@ from account.models import Address, UserProfile
 from api.serializers import UserProfileSerializer
 class OrderSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)
+    get_total = serializers.ReadOnlyField()
     class Meta:
         exclude =('status',)
         model = Order

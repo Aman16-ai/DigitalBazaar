@@ -29,7 +29,7 @@ class Cart(models.Model):
 
     @property
     def getCartTotal(self):
-        userCartItems = CartItem.objects.filter(cart=self)
+        userCartItems = CartItem.objects.filter(Q(cart=self) & Q(status = "NOT_ORDERED"))
         total = 0
         for item in userCartItems:
             total += item.product.getFinalPrice * item.quantity
@@ -38,7 +38,7 @@ class Cart(models.Model):
 
     @property
     def getCartTotalDiscout(self):
-        userCartItems = CartItem.objects.filter(cart=self)
+        userCartItems = CartItem.objects.filter(Q(cart=self) & Q(status = "NOT_ORDERED"))
         totalDiscount = 0
         for item in userCartItems:
             totalDiscount += item.product.getDiscountPrice() * item.quantity
@@ -47,7 +47,7 @@ class Cart(models.Model):
 
     @property
     def getCartOriginalPrice(self):
-        userCartItems = CartItem.objects.filter(cart=self)
+        userCartItems = CartItem.objects.filter(Q(cart=self) & Q(status = "NOT_ORDERED"))
         total = 0
         for item in userCartItems:
             total += item.product.price * item.quantity
@@ -56,7 +56,7 @@ class Cart(models.Model):
 
     @property
     def getCartTotalItems(self):
-        userCartItem = CartItem.objects.filter(cart=self)
+        userCartItem = CartItem.objects.filter(Q(cart=self) & Q(status = "NOT_ORDERED"))
         count = 0
         for item in userCartItem:
             count += item.quantity
