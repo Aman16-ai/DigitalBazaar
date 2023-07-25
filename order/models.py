@@ -25,3 +25,4 @@ class Order(models.Model):
         total = 0
         for item in self.items.all():
             total += item.product.getFinalPrice * item.quantity
+        return total
