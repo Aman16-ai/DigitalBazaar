@@ -23,10 +23,10 @@ class OrderSerializer(serializers.ModelSerializer):
             item.save()
             order.items.add(item)
 
-        razropay_client = RazorPayClient()
-        result = razropay_client.create_order(order.get_total)
-        print(result)
-        order.online_payment_order_id = result['id']
+        # razropay_client = RazorPayClient()
+        # result = razropay_client.create_order(order.get_total)
+        # print(result)
+        order.online_payment_order_id = validated_data.get('online_payment_order_id')
         order.save()
         return order
     
@@ -45,3 +45,11 @@ class TransactionSerializer(serializers.ModelSerializer):
         transcation = Transaction(**validated_data,amount = amount)
         return transcation
 
+class CreateRazorpayOrderSerializer(serializers.Serializer):
+    amount = serializers.FloatField()
+
+    def create(self, validated_data):
+        razropay_client = RazorPayClient()
+        result = razropay_client.create_order(validated_data.get('amount'))
+        print(result)
+        return result['id']

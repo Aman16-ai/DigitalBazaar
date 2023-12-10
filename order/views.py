@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import Order, Transaction
-from .serializer import OrderSerializer, TransactionSerializer
+from .serializer import OrderSerializer, TransactionSerializer,CreateRazorpayOrderSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 # Create your views here.
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -57,3 +58,12 @@ class TranscationViewSet(viewsets.ModelViewSet):
             'kwargs': getattr(self, 'kwargs', {}),
             'request': getattr(self, 'request', None)
         }
+    
+class CreateRazorPayOrderId(APIView):
+    def post(self,request):
+        serializer = CreateRazorpayOrderSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            orderId = serializer.save()
+            return Response({"status":201,"Response":{'OrderId':orderId}})
+        return Response({"status":202,"Response":{"Message":"Falied to create order id"}})
+    
